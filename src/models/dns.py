@@ -1,10 +1,18 @@
-import json
 from typing import List, Optional
-from pydantic import BaseModel, Field
-from datetime import datetime
+from enum import Enum
+from pydantic import BaseModel, Field, validator
 
-class DnsRecordList(BaseModel):
+class DnsType(str, Enum):
+    A = "A"
+    CNAME = "CNAME"
+
+class GetDnsRecord(BaseModel):
     id: str
-    type: str
+    type: DnsType
+    name: str
+    content: str
+
+class AddDnsRecord(BaseModel):
+    type: DnsType
     name: str
     content: str
