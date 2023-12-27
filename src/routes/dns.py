@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 from services.sanitizer import sanitizeDnsList
+from dotenv import load_dotenv, dotenv_values
 
 dns_router = APIRouter(
     tags=["DNS"]
@@ -19,17 +20,21 @@ dns_router = APIRouter(
 
 from fastapi import HTTPException
 
+load_dotenv()
+config = dotenv_values(".env")
+
+zone_id = config["CLOUDFLARE_ZONE_ID"]
+auth_key = config["CLOUDFLARE_KEY"]
 
 @dns_router.get("/list")
 async def GetDnsRecord():
     try:
-        zone_id = "406f833ab7f1ab427f94e36b7391ed59"
         url = "https://api.cloudflare.com/client/v4/zones/"+zone_id+"/dns_records"
 
         header = {
             "Content-Type": "application/json",
             "X-Auth-Email": "devops.econolab@gmail.com",
-            "X-Auth-Key": "4c6179be706b8e510caff31da391329811834"
+            "X-Auth-Key": auth_key
         }
 
         response = requests.request("GET", url, headers=header)
