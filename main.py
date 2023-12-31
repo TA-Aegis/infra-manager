@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 import uvicorn
-from routes.dns import dns_router
+from src.routes.dns import dns_router
 
 app = FastAPI()
 

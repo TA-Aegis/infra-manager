@@ -1,9 +1,9 @@
+import json
 from typing import List
 
-from models.dns import GetDnsRecord
+from src.models.dns import GetDnsRecord
 
-
-def sanitizeDnsList(json_content: dict) -> List[GetDnsRecord]:
+def sanitizeDnsList(json_content: dict) -> str:
     try:
         # Extract the "result" key, which contains the list of DNS records
         dns_records_json = json_content.get("result", [])
@@ -11,14 +11,15 @@ def sanitizeDnsList(json_content: dict) -> List[GetDnsRecord]:
         # Convert each DNS record JSON into a DnsRecord instance
         dns_records = [GetDnsRecord(**record) for record in dns_records_json]
 
-        return dns_records
+        # Serialize the list of DNS records to JSON
+        json_data = [record.dict() for record in dns_records]
+
+        return json_data
 
     except ValueError as e:
         # Handle JSON parsing errors
         print(f"Error parsing JSON: {e}")
-        return []
 
     except Exception as e:
         # Handle other exceptions
         print(f"Error processing DNS records: {e}")
-        return []

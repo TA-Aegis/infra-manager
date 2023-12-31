@@ -28,4 +28,4 @@ env:
 	@rm .env.tmp
 
 run:
-	python src/main.py
+	uvicorn main:app --reload
